@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{bm}
+
+\title{Hints, Clues and Excerpts}
+\date{November 23, 2022}
+\author{Rishav}
+
+\begin{document}
+\maketitle
+\begin{center}
+  Last modified: \today{} 
+\end{center}
+\tableofcontents
+\newpage
+
+\section{Mean of a random variable on a manifold}
+\href{https://djalil.chafai.net/blog/2010/05/01/mean-of-random-variable-on-manifold/}{Djalil Chafai (May 1, 2010)} \\
+
+Let $\bm{X}$ be a random variable on a manifold $\bm{M}$. Is there a nice (intrinsic?) definition of a mean of $\bm{X}$ and of its variance? This funny question comes from concrete motivations (imaging). What can be done with a chart? The problem here is that the mean is a global notion.\medskip
+
+If $\bm{M}$ has global coordinates of almost global, like stereographical projections for spheres, one may use them. This is ugly and non canonical. If $\bm{M}$ is a Lie group, one may use the exponential map. When $M$ is equipped with a Riemannian metric $d: \bm{M}\times \bm{M} \rightarrow\mathbb{R}_{+}$ one may think about using a variational approach, and simply define the mean $m$ of $\bm{X}$ as
+
+$$
+  m:=\text{arg}\,\min\limits_{x\in\bm{M}}\, \mathbb{E}(d(x, \bm{X})^{2}).
+$$
+
+The value of minimum is the variance of $\bm{X}$. This definition does not always provide unique point on $\bm{M}$, as shown by the example of the uniform law on spheres for which every point is a mean! This is not a bug, it is a feature, a geometrical feature due to the invariance of the law by isometries in this example. One can ask about an empirical estimator of mean, and its asymptotic fluctuations. For some answers, see e.g. the work of Pennec and Bhattacharya and Bhattacharya. The variational expression of $d$ in terms of geodesics is valid up to the cut-locus/injectivity-radius of the exponential map.\medskip
+
+Beyond the mean, the law of $\bm{X}$ may be viewed as the linear from
+$$
+  f \in \mathcal{C}_{b}(\bm{M}, \mathbb{R})\mapsto \mathbb{E}(f(\bm{X})).
+$$
+
+This does not rely on the manifold nature of $\bm{M}$ since we only use the fact that $\bm{M}$ is a topological space. Note that if $\bm{M}$ is an open subset of $\mathbb{R}^{d}$ then we recover the usual $\mathbb{E}(\bm{X})$ by the approximation via dominated convergence. The integrability of $\bm{X}$ is the class of functions for which the map above is finite. In some sense $\mathbb{E}(\bm{X})$ is an element of the bidual $\bm{M}''$  of $\bm{M}$, provided that we view  $M':=\mathcal{C}_{b}(\bm{M},\mathbb{R})$ as a sort of dual of $\bm{M}$. Of course, $\bm{M}\subset\bm{M}''$ via the canonical injection but the converse does not hold in general. \medskip
+
+If $(\bm{X}_{n})_{n\ge 0}$ is an irreducible positive recurrent aperiodic Marcov chain with state space $M$ and unique invariance law $\mu$ then the large numbers of states that with probability one, and regardless of the initial law of the chain, we have
+
+$$
+  \frac{1}{n}\delta_{\bm{X}_{1}} + ... + \frac{1}{n}\delta_{\bm{X}_{n}}\xrightarrow[n\rightarrow \infty]{\mathcal{C}_{b}(\bm{M},\mathbb{R})}\mu.
+$$
+
+The asymptotic fluctuations of this convergence are described by the central limit theorem, which involves the variance of $\mu$ of the solution of the Poisson equation associated to the dynamics.
+
+\section{Sequential Optimal Attitude Recursion Filter}
+\href{https://arc.aiaa.org/doi/10.2514/1.49561}{Christian and Lightsey (2010)}\\
+
+Note that all of the SOAR filter update equations make the assumptions that the a priori state error and measurement error have Gaussian distributions. The equations of motion for attitude propagation are nonlinear and it is well-known that Gaussian distribution undergoing a nonlinear transformation do not necessarily remain Gaussian. Therefore, it is unlikely that the a priori state error at any given time is truly Gaussian. Despite the face that the true underlying distribution may not actually be Gaussian, many filters still assume a Gaussian distribution. Empirical evidence has shown that these filters still perform well in many scenarios, even though the simplifying assumption of a Gaussian distribution may not strictly be true.
+
+\section{What is the Covariance Matrix?}
+\href{https://fouryears.eu/2016/11/23/what-is-the-covariance-matrix/}{Konstantin (Novemver 23, 2016)}\\
+
+Most textbooks on statistics cover covariance right in their first chapters. It is defined as a useful "measure of dependency" between two random variables:
+
+$$
+  \text{cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y-\mathbb{E}[Y])].
+$$
+
+The textbook would usually provide some intuition on why it is defined as it is, prove a couple of properties, such as bilinearity, define the \textit{covariance matrix} for multiple variable as $\Sigma_{ij} = \text{cov}(X_{i},Y_{j})$ and stop there. Later on the covariance matrix would pop up here and there in seemingly random ways. In one place you would have to take its inverse, in another compute the eigenvectors or multiply a vector by it, or do something else for no apparent reason apart from "that's the solution we came up with by solving an optimization task".\,medskip
+
+In reality though, there are some very good and quite intuitive reasons for why the covariance matrix appears in various techniques in one or other way. This post aims to show that, illustrating some curious corners of linear algebra in the process.
+
+\paragraph{Meet the Normal Distribution}\mbox{}\\\\
+The best way to truly understand the covariance matrix is to forget the textbook definitions completely and depart from a different point instead Namely, from the definition of the multivariate Gaussian distribution.\medskip
+
+We say that the vector $\bm{x}$ has a \textit{normal} (or \textit{Gaussian}) distribution with mean $\mu$ and covariance $\Sigma$ if:
+
+$$
+ \text{Pr}(\bm{x}) = \big|2\pi\Sigma\big|^{\frac{1}{2}} \exp\left(-\frac{1}{2}(\bm{x}-\mu)^{\intercal}\Sigma^{-1}(\bm{x}-\mu)\right).
+$$
+
+To simplify the math a bit, we will limit ourselves to the centered distribution (i.e. $\mu = \bm{0}$) and refrain from writing the normalizing constant $\big|2\pi\Sigma\big|^{\frac{1}{2}}$. Now, the definition of the (centered) multivariate Gaussian looks as follows:
+
+$$
+  \text{Pr}(\bm{x})\propto\exp\left(-0.5\,\bm{x}^{\intercal}\Sigma^{-1}\bm{x}\right)
+$$
+
+Much simpler, isn't it? Finally, let us define the covariance matrix as nothing else but \textit{the parameter of the Gaussian distribution}. That's it. You will see where it lead us in a moment.
+
+\paragraph{Transforming the Symmetric Gaussian}\mbox{}\\\\
+Consider a symmetric Gaussian distribution, i.e. the one with $\Sigma = \bm{I}$ (the identity matrix). Let us take a sample form it, which will of course be symmetric, round cloud of points:
+
+%figure 
+
+We know from above that the likelihood of each point in this sample Is
+
+\begin{equation}
+  \label{symmetric_gaussian_probability}
+  \text{P}(x)\propto\exp\left(-0.5\,\bm{x}^{\intercal}\bm{x}\right)
+\end{equation}
+
+Now let us apply a linear transformation $\bm{A}$ to the points, i.e. let $\bm{y} = \bm{Ax}$. Suppose that, for the sake of this example, $\bm{A}$ scales the vertical axis by 0.5 and then rotates everything by 30 degrees. We will get the following new cloud of points $\bm{y}$:
+
+%figure
+
+What is the distribution of $\bm{y}$? Just substitute $\bm{x}=\bm{A}^{-1}\bm{y}$ into (\ref{symmetric_gaussian_probability}), to get:
+
+$$
+  \begin{aligned}
+    \text{P}(\bm{y}) &\propto \exp\left(-0.5\left(\bm{A}^{-1}\bm{y}\right)^{\intercal}\left(\bm{A}^{-1}\bm{y}\right)\right) \\
+    &= \exp\left(-0.5\,\bm{y}^{\intercal}\left(\bm{A}\bm{A}^{\intercal}\right)^{-1}\bm{y}\right)
+  \end{aligned}
+$$
+
+This is exactly the Gaussian distribution with covariance $\Sigma = \bm{A}\bm{A}^{\intercal}$. The logic works both ways: if we have a Gaussian distribution with covariance $\Sigma$, we can regard it as a \textit{distribution which was obtained by transforming the symmetric Gaussian by some} $\bm{A}$, and we are given $\bm{A}\bm{A}^{\intercal}$.\medskip
+
+More generally, if we have \textit{any} data then, when we compute its covariance to be $\Sigma$, we can say that \textit{if our data were Gaussian}, then \textit{it could have been obtained} from a symmetric cloud using some transformation $\bm{A}$, and we just estimated the matrix $\bm{A}\bm{A}^{\intercal}$, corresponding to this transformation.\medskip
+
+Note that we do not know the actual $\bm{A}$, and it is mathematically totally fait. There can be many different transformations of the symmetric Gaussian which result in the same distribution shape. For example, if $\bm{A}$ is just rotation by some angle, the transformation does not affect the shape of the distribution at all. COrrespondingly, $\bm{A}\bm{A}^{\intercal} = \bm{I}$ for all rotation matrices. When we see a unit covariance matrix we really do not know, whether is it the "originally symmetric" distribution, or a "rotated symmetric distribution". And we should not really care - those two are identical.\medskip
+
+There is a theorem in linear algebra, which says that any symmetric matrix $\Sigma$ can be represented as:
+
+$$
+  \Sigma = \bm{V}\bm{D}\bm{V}^{\intercal},
+$$
+
+where $\bm{V}$ is orthogonal (i.e. a rotation) and $\bm{D}$ is diagonal (i.e. a coordinate-wise scaling). If we rewrite it slightly, we will get:
+
+$$
+  \Sigma = \left(\bm{V}\bm{D}^{\frac{1}{2}}\right)\left(\bm{V}\bm{D}^\frac{1}{2}\right)^{\intercal} = \bm{A}\bm{A}^{\intercal},
+$$
+
+where $\bm{A} = \bm{V}\bm{D}^{\frac{1}{2}}$. This, in simple words, means that \textit{any covariance matrix} $\Sigma$ could have been the result of transforming the data using a \textit{coordinate-wise scaling} $\bm{D}^{\frac{1}{2}}$ followed by a rotation V. Just like in our example with $\bm{x}$ and $\bm{y}$ above.
+
+\end{document}
+
+
