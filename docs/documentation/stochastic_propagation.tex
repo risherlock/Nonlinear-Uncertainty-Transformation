@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[margin=0.8in]{geometry}
 \usepackage{amsmath, amssymb}
-\usepackage{bm}
+\usepackage{bm, hyperref}
 
 \title{Propagation of Random Variables on \\Configuration Manifold of \\Nonlinear Dynamics}
 \author{Rishav}
@@ -9,16 +9,24 @@
 \begin{document}
 \maketitle
 
-\section*{Abstract}
+\section*{Abstract\footnote{I am aware that the idea as it is in this abstract is subject to errors. It could be typos or in my line of reasoning. I would like to apologize before hand. I am very eger to explore this domain under your guidance.}}
+
 \pagenumbering{gobble}
-\textbf{Bakground: } Propagation of random variables, parameterized by mean and covariance, through a linear dynamical system has analytical solutions. Both mean and covariance are transformed by the state transition matrix in the form of vector and tensor transformation respectively. If subjected to Gaussian distribution, this solution is important for the optimality of the Linear Kalman Filter which has proved to be very effective for practical estimation problems. However, there is no closed form solution for the propagation of random variables for nonlinear dynamics. Representative methods of Kalman filter to nonlinear dynamics involve direct linearization (Extended Kalman Filter) and clever sampling (Unscented Kalman Filter).
+\textbf{Problem I: } Propagation of random variables, parameterized by mean and covariance, through a linear dynamical system has analytical solutions. Both mean and covariance are transformed by the state transition matrix in the form of vector and tensor transformation respectively. If subjected to Gaussian distribution, this solution is important for the optimality of the Linear Kalman Filter which has proved to be very effective for practical estimation problems. However, there is no closed form solution for the propagation of random variables for nonlinear dynamics. Representative methods of Kalman filter to nonlinear dynamics involve direct linearization (Extended Kalman Filter) and clever sampling (Unscented Kalman Filter). \medskip
+
+\noindent
+\textbf{Problem II: } Standard Kalman Filter parameterize the state vector $\bm{x}\in\mathbb{R}^{n}$ of the dynamical system as the element of $n$-th dimensional vector space. This means that the output estimate of the Kalman Filter $\hat{\bm{x}}\in\mathbb{R}^{n}$ is an element of a vector space of same dimension. But there instances where the state vector of the dynamical system is constrained. We can take rotational kinematics in quaternion as example where quaternions have unit norm constraint. It is known that Kalman Filter fails to produce quaternions with unit norm constraints because it has no idea of the configuration space of the dynamics (2-sphere in case of quaternions). \medskip
+
+\noindent
+Possible solutions to above problems could be to study the propagation of mean and covariance of the Gaussian noise in the configuration space of the dynamical system. \medskip
 
 \noindent 
 \textbf{Goal: } The goal of this research is to explore the propagation of random variables on configuration space of the nonlinear dynamical systems using tools of differential geometry. More precisely, the problem statement can be stated as follows: Let $\dot{\bm{x}} = g(\bm{x})$, be a $n$-th dimensional nonlinear dynamical system. $\bar{\bm{x}}\in\mathbb{R}^{n}$ and $\bm{\Sigma}\in\mathbb{R}^{n\times n}$ are the mean and covariance of the input random variables to the system. Find the mean and covariance of the random variables after they propagate through the nonlinear dynamics. \medskip
 
-Attractive mathematical tools to explore this problem are; \textbf{\textit{i.}} concepts of Lie algebra with its exponential mapping for the transformation for mean and \textbf{\textit{ii.}} differential geometry with properties of metric tensor for covariance. The use of Lie algebra is pretty evident and is actively worked upon. It is the use of differential geometry and metric tensor that I feel is very important. $\bm{\Sigma}^{-1}$ is a metric tensor i.e. whatever transformed space the covariance matrix $\bm{\Sigma}$ represents, $\bm{\Sigma}^{-1}$ is metric tensor to the space. To be able relate this metric tensor to the configuration manifold of the nonlinear dynamics might provide us with important insights on the propagation of $\bar{\bm{x}}$ and $\bm{\Sigma}$ through the nonlinear dynamics. \medskip
+\noindent
+Attractive mathematical tools to explore this problem are; \textbf{\textit{i.}} concepts of Lie algebra with its exponential mapping for the transformation for mean and \textbf{\textit{ii.}} differential geometry with properties of metric tensor for covariance. The use of Lie algebra is pretty evident and is actively worked upon. It is the use of differential geometry with metric tensor as tool that I feel is very important. $\bm{\Sigma}^{-1}$ is a metric tensor i.e. whatever transformed space the covariance matrix $\bm{\Sigma}$ represents, $\bm{\Sigma}^{-1}$ is metric tensor to the space. To be able relate this metric tensor to the configuration manifold of the nonlinear dynamics might provide us with important insights on the propagation of $\bar{\bm{x}}$ and $\bm{\Sigma}$ through the nonlinear dynamics. \medskip
 
 \noindent 
-\textbf{Test dynamics: } Throughout the research, rotational kinematics of 3D rigid bodies parameterized in quaternions is used as the test dynamics. In doing so, $SO(3)$ is the test manifold to test the results numerically. The attitude estimation algorithm resulting from the transformation of $\bm{\Sigma}$ and $\bar{\bm{x}}$ is evaluated against Multiplicative Extended Kalman Filter (MEKF) and Unscented Kalman Filter used in spacecraft attitude estimation. 
+\textbf{Test dynamics: } Throughout the research, rotational kinematics of 3D rigid bodies parameterized in quaternions is used as the test dynamics. In doing so, $SO(3)$ is the test manifold to test the results numerically. The attitude estimation algorithm resulting from the transformation of $\bm{\Sigma}$ and $\bar{\bm{x}}$ in this research is implemented in embedded hardware and evaluated against Multiplicative Extended Kalman Filter (MEKF) and Unscented Kalman Filter used in spacecraft attitude estimation\footnote{I have already studied and implemented the MEKF and UKF in question. \href{https://github.com/risherlock/Attitude-Estimation}{https://github.com/risherlock/Attitude-Estimation}}. 
 
 \end{document}
